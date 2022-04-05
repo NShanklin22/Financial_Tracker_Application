@@ -14,15 +14,23 @@ connection = sqlite3.connect('data\Portfolio.db')
 cursor = connection.cursor()
 engine = sqlalchemy.create_engine('sqlite:///data\Portfolio.db').connect()
 
-df = pd.read_sql_table('PortfolioData', engine, index_col=1)
+df = pd.read_sql_table('PortfolioData', engine, index_col='date')
 
-def mainMenu():
-    MenuOption = getMenuOption()
-    if(MenuOption == 1):
+global assets
+assets = ['btc','cash','gold','silver','spy']
+
+def mainMenu(df):
+    MenuOption = int(getMenuOption())
+    if (MenuOption == 1):
+        updateAssets(df)
         return
-    elif(MenuOption == 2):
+    elif (MenuOption == 2):
+        print("Reading data from the database")
+        readData()
         return
-    elif(MenuOption == 3):
+    elif (MenuOption == 3):
+        print("Lets analyze some data")
+        analyzeData()
         return
 
 def getMenuOption():
@@ -34,13 +42,20 @@ def getMenuOption():
         else:
             print("That is not a valid option")
 
-def updateAssets():
-    return
+def updateAssets(df):
+    today = datetime.today().date()
+    new_row = getNewRow(assets,today)
+    new_row['total'] = new_row.sum(axis=1)
+    df = new_row
+    df.iloc[today] = new_row
+    df.to_sql('PortfolioData', engine, if_exists='replace', index=True, index_label="date")
 
 def readData():
     return
 
+
 def analyzeData():
     return
 
-mainMenu()
+
+mainMenu(df)

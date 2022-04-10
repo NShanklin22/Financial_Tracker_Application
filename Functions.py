@@ -2,45 +2,23 @@ import pandas as pd
 import datetime
 from datetime import datetime
 
-#def selectAsset():
-#     assets = ['btc','cash','gold','silver','spy']
-#     while True:
-#         asset = input('Please select an asset from {}: '.format(assets))
-#         if asset == "gold" or asset == "silver" or asset == "btc" or asset == "spy" or asset == "cash":
-#             break
-#         else:
-#             print("That is not a valid asset, please try again")
-#     return asset
-#
-# def assetValue(asset):
-#     while True:
-#         quantity = input('Please enter ammount of {} currently held in $: '.format(asset))
-#         if quantity.isnumeric():
-#             break
-#         else:
-#             print("That is not a valid ammount")
-#     return quantity
-#
-# def updateDf(df,asset,quantity):
-#     new_row = df.iloc[-1].copy()
-#     print(new_row.head())
-#     new_row['date'] = datetime.today().date()
-#     new_row[asset] = quantity
-#     print(new_row.head())
-#     # Append the main dataframe with the new row
-#     df = df.append(new_row, ignore_index=True)
-#     # Sort values by date
-#     df.sort_values('date', inplace=True)
-#     # Merge the data for duplicate dates
-#     df = df.groupby(['date'], as_index=False).max()
-#     return df
-#
-# def addNewEntry():
-#     global df
-#     asset = selectAsset()
-#     quantity = assetValue(asset)
-#     df = updateDf(df,asset,quantity)
-#     df.to_sql('PortfolioData', engine, if_exists='replace', index=False)
+def getMenuOption():
+    printMainMenu()
+    while True:
+        MenuOption = input("Please select a menu option: ")
+        if MenuOption.isdigit() and (int(MenuOption) == 1 or int(MenuOption) == 2 or int(MenuOption) == 3):
+            return MenuOption
+        else:
+            print("That is not a valid option")
+
+def getDataMenu():
+    printDataMenu()
+    while True:
+        MenuOption = input("Please select a menu option: ")
+        if MenuOption.isdigit() and (int(MenuOption) == 1 or int(MenuOption) == 2):
+            return MenuOption
+        else:
+            print("That is not a valid option")
 
 def getNewRow(assets,today):
     new_row = pd.DataFrame(index=[today])
@@ -58,10 +36,20 @@ def getNewRow(assets,today):
             print("That is not a valid response")
     return new_row
 
-def printMenu():
-    print("Menu Options")
+def printMainMenu():
+    print("-----------------------")
+    print("Main Menu")
     print("-----------------------")
     print("1 - Update assets")
     print("2 - View data")
     print("3 - Analyze data")
     print("----------------------")
+
+def printDataMenu():
+    print("-----------------------")
+    print("Data Menu")
+    print("-----------------------")
+    print("1 - View current assets")
+    print("2 - View asset values")
+    print("----------------------")
+
